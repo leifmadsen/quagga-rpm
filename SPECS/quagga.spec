@@ -16,6 +16,13 @@ URL: http://www.quagga.net
 Source0: http://github.com/CumulusNetworks/quagga/archive/cm_2.5.tar.gz
 Source1: quagga-filter-perl-requires.sh
 Source2: quagga-tmpfs.conf
+Source3: zebra.service 
+Source4: ospfd.service
+Source5: bgpd.service
+Source6: ospf6d.service
+Source7: quagga.sysconfig
+Source8: quagga.logrotate
+
 BuildRequires: systemd
 BuildRequires: net-snmp-devel autoconf automake gcc gcc-c++ json-devel
 BuildRequires: texinfo libcap-devel texi2html
@@ -120,17 +127,13 @@ make DESTDIR=%{buildroot} INSTALL="install -p" CP="cp -p" install
 # Remove this file, as it is uninstalled and causes errors when building on RH9
 rm -rf %{buildroot}/usr/share/info/dir
 
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/zebra.service %{buildroot}%{_unitdir}/zebra.service
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/isisd.service %{buildroot}%{_unitdir}/isisd.service
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/ripd.service %{buildroot}%{_unitdir}/ripd.service
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/ospfd.service %{buildroot}%{_unitdir}/ospfd.service
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/bgpd.service %{buildroot}%{_unitdir}/bgpd.service
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/babeld.service %{buildroot}%{_unitdir}/babeld.service
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/ospf6d.service %{buildroot}%{_unitdir}/ospf6d.service
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/ripngd.service %{buildroot}%{_unitdir}/ripngd.service
+install -p -m 644 %{SOURCE3} %{buildroot}%{_unitdir}/zebra.service
+install -p -m 644 %{SOURCE4} %{buildroot}%{_unitdir}/ospfd.service
+install -p -m 644 %{SOURCE5} %{buildroot}%{_unitdir}/bgpd.service
+install -p -m 644 %{SOURCE6} %{buildroot}%{_unitdir}/ospf6d.service
 
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/quagga.sysconfig %{buildroot}/etc/sysconfig/quagga
-install -p -m 644 %{_builddir}/%{name}-%{version}/redhat/quagga.logrotate %{buildroot}/etc/logrotate.d/quagga
+install -p -m 644 %{SOURCE7} %{buildroot}/etc/sysconfig/quagga
+install -p -m 644 %{SOURCE8} %{buildroot}/etc/logrotate.d/quagga
 
 install -d -m 770  %{buildroot}/var/run/quagga
 
@@ -148,13 +151,9 @@ getent passwd quagga >/dev/null 2>&1 || useradd -u %quagga_uid -g %quagga_gid -M
 
 %post
 %systemd_post zebra.service
-%systemd_post isisd.service
-%systemd_post ripd.service
 %systemd_post ospfd.service
 %systemd_post bgpd.service
-%systemd_post babeld.service
 %systemd_post ospf6d.service
-%systemd_post ripngd.service
 
 if [ -f %{_infodir}/%{name}.inf* ]; then
     install-info %{_infodir}/quagga.info %{_infodir}/dir || :
@@ -175,13 +174,9 @@ fi
 
 %postun
 %systemd_postun_with_restart zebra.service
-%systemd_postun_with_restart isisd.service
-%systemd_postun_with_restart ripd.service
 %systemd_postun_with_restart ospfd.service
 %systemd_postun_with_restart bgpd.service
-%systemd_postun_with_restart babeld.service
 %systemd_postun_with_restart ospf6d.service
-%systemd_postun_with_restart ripngd.service
 
 if [ -f %{_infodir}/%{name}.inf* ]; then
     install-info --delete %{_infodir}/quagga.info %{_infodir}/dir || :
