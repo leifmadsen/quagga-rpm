@@ -1,0 +1,11 @@
+--- configure.ac.orig	2016-01-20 21:53:14.430883654 +0000
++++ configure.ac	2016-01-20 21:51:51.348883654 +0000
+@@ -49,7 +49,7 @@
+ AC_SUBST(pkgsrcdir)
+ AC_SUBST(pkgsrcrcdir)
+ 
+-LIBS="$LIBS -L/usr/include/json/ -ljson"
++LIBS="$LIBS -L/usr/include/json/ -ljson-c"
+ 
+ dnl ------------
+ dnl Check CFLAGS
