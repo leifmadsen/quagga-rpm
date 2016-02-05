@@ -7,12 +7,11 @@
 
 Name: quagga
 Version: 0.99.23.1
-Release: cl2.5+2
+Release: cl2.5+3%{?dist}
 Summary: Routing daemon
 License: GPLv2+
 Group: System Environment/Daemons
 URL: http://www.quagga.net
-#Source0: http://download.savannah.gnu.org/releases/quagga/%{name}-%{version}.tar.xz
 Source0: http://github.com/CumulusNetworks/quagga/archive/cm_2.5.tar.gz
 Source1: quagga-filter-perl-requires.sh
 Source2: quagga-tmpfs.conf
@@ -24,9 +23,9 @@ Source7: quagga.sysconfig
 Source8: quagga.logrotate
 
 BuildRequires: systemd
-BuildRequires: net-snmp-devel autoconf automake gcc gcc-c++ json-devel
+BuildRequires: net-snmp-devel autoconf automake gcc gcc-c++ json-c-devel
 BuildRequires: texinfo libcap-devel texi2html
-BuildRequires: readline readline-devel ncurses ncurses-devel
+BuildRequires: readline readline-devel ncurses ncurses-devel libtool
 Requires: net-snmp ncurses
 Requires(post): systemd /sbin/install-info
 Requires(preun): systemd /sbin/install-info
@@ -36,6 +35,7 @@ Obsoletes: quagga-sysvinit
 
 Patch0: 0001-systemd-change-the-WantedBy-target.patch
 Patch1: 0002-configure-ac.patch
+Patch2: 0003-lib-json.patch
 
 %define __perl_requires %{SOURCE1}
 
@@ -78,6 +78,7 @@ developing OSPF-API and quagga applications.
 
 %patch0 -p1
 %patch1 -p0
+%patch2 -p0
 
 %build
 libtoolize --force
@@ -237,6 +238,10 @@ fi
 %{_includedir}/quagga/ospfd/*.h
 
 %changelog
+* Fri Feb 05 2016 Leif Madsen <lmadsen@redhat.com>
+- Minor cleanup of the RPM spec file
+- Allow building on both EPEL 7 and Fedora 23
+
 * Wed Jan 20 2016 Stanley Karunditu <stanleyk@cumulusnetworks.com>
 - Build cumulus linux 2.5 version using latest available SPEC file
 
@@ -258,7 +263,7 @@ fi
 * Mon May 26 2014 Michal Sekletar <msekleta@redhat.com> - 0.99.22.4-4
 - raise privileges before creating netlink socket (#1097684)
 
-* Thu Jan 29 2014 Michal Sekletar <msekleta@redhat.com> - 0.99.22.4-3
+* Wed Jan 29 2014 Michal Sekletar <msekleta@redhat.com> - 0.99.22.4-3
 - fix source url
 - fix date in the changelog
 

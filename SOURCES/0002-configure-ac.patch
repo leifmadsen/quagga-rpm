@@ -5,7 +5,7 @@
  AC_SUBST(pkgsrcrcdir)
  
 -LIBS="$LIBS -L/usr/include/json/ -ljson"
-+LIBS="$LIBS -L/usr/include/json/ -ljson-c"
++LIBS="$LIBS -L/usr/include/json-c/ -ljson-c"
  
  dnl ------------
  dnl Check CFLAGS
