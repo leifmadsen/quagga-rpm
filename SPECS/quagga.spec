@@ -7,12 +7,11 @@
 
 Name: quagga
 Version: 0.99.23.1
-Release: cl2.5+2
+Release: cl2.5+2%{?dist}
 Summary: Routing daemon
 License: GPLv2+
 Group: System Environment/Daemons
 URL: http://www.quagga.net
-#Source0: http://download.savannah.gnu.org/releases/quagga/%{name}-%{version}.tar.xz
 Source0: http://github.com/CumulusNetworks/quagga/archive/cm_2.5.tar.gz
 Source1: quagga-filter-perl-requires.sh
 Source2: quagga-tmpfs.conf
@@ -24,9 +23,9 @@ Source7: quagga.sysconfig
 Source8: quagga.logrotate
 
 BuildRequires: systemd
-BuildRequires: net-snmp-devel autoconf automake gcc gcc-c++ json-devel
+BuildRequires: net-snmp-devel autoconf automake gcc gcc-c++ json-c-devel
 BuildRequires: texinfo libcap-devel texi2html
-BuildRequires: readline readline-devel ncurses ncurses-devel
+BuildRequires: readline readline-devel ncurses ncurses-devel libtool
 Requires: net-snmp ncurses
 Requires(post): systemd /sbin/install-info
 Requires(preun): systemd /sbin/install-info
@@ -258,7 +257,7 @@ fi
 * Mon May 26 2014 Michal Sekletar <msekleta@redhat.com> - 0.99.22.4-4
 - raise privileges before creating netlink socket (#1097684)
 
-* Thu Jan 29 2014 Michal Sekletar <msekleta@redhat.com> - 0.99.22.4-3
+* Wed Jan 29 2014 Michal Sekletar <msekleta@redhat.com> - 0.99.22.4-3
 - fix source url
 - fix date in the changelog
 
