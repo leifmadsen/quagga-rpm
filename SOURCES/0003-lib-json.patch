@@ -1,0 +1,12 @@
+diff -ru lib/json.h lib/json.h
+--- lib/json.h	2016-02-05 13:46:29.539124034 -0500
++++ lib/json.h	2016-02-05 13:46:44.190868490 -0500
+@@ -22,7 +22,7 @@
+ #ifndef _QUAGGA_JSON_H
+ #define _QUAGGA_JSON_H
+ 
+-#include <json/json.h>
++#include <json-c/json.h>
+ 
+ extern void json_object_string_add(struct json_object* obj, const char *key,
+                                    const char *s);
